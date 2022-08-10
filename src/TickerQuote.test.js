@@ -54,16 +54,16 @@ test("to produce the correct change value for negative numbers", () => {
   fc.assert(
     fc
       .property(
-        fc
-          .integer({ min: Number.MIN_SAFE_INTEGER, max: -1 })
-          .filter((t) => !Number.isNaN(t)),
+        fc.integer({ min: Number.MIN_SAFE_INTEGER, max: -1 }),
         (negativeNum) => {
           render(<ChangeDisplayValue value={negativeNum} />)
           const ele = screen.getByText(
-            getRegExpForCurrencyValue("\u25BE " + Math.abs(negativeNum)),
+            getRegExpForCurrencyValue(Math.abs(negativeNum)),
           )
           expect(ele).toBeInTheDocument()
           expect(ele).toHaveClass("text-red-700")
+          expect(screen.getByText(/\u25BE/)).toBeInTheDocument()
+          expect(screen.queryByText(/\u25B4/)).not.toBeInTheDocument()
         },
       )
       .beforeEach(cleanup),
@@ -74,15 +74,14 @@ test("to produce the correct change value for positive numbers", () => {
   fc.assert(
     fc
       .property(
-        fc
-          .integer({ min: 1, max: Number.MAX_SAFE_INTEGER })
-          .filter((t) => !Number.isNaN(t)),
+        fc.integer({ min: 1, max: Number.MAX_SAFE_INTEGER }),
         (positiveNum) => {
           render(<ChangeDisplayValue value={positiveNum} />)
-          const ele = screen.getByText(
-            getRegExpForCurrencyValue("\u25B4 " + positiveNum),
-          )
+          const ele = screen.getByText(getRegExpForCurrencyValue(positiveNum))
           expect(ele).toBeInTheDocument()
+          expect(ele).toHaveClass("text-green-600")
+          expect(screen.getByText(/\u25B4/)).toBeInTheDocument()
+          expect(screen.queryByText(/\u25BE/)).not.toBeInTheDocument()
         },
       )
       .beforeEach(cleanup),
@@ -92,7 +91,11 @@ test("to produce the correct change value for positive numbers", () => {
 test("to produce the correct change value for zero", () => {
   render(<ChangeDisplayValue value={0} />)
 
-  expect(screen.getByText(/\$0.00/)).toBeInTheDocument()
+  const ele = screen.getByText(/\$0.00/)
+  expect(ele).toBeInTheDocument()
+  expect(ele).toHaveClass("text-gray-400")
+  expect(screen.queryByText(/\u25BE/)).not.toBeInTheDocument()
+  expect(screen.queryByText(/\u25B4/)).not.toBeInTheDocument()
 })
 
 function getRegExpForCurrencyValue(start) {
