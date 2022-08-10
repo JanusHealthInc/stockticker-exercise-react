@@ -9,11 +9,12 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
+    "tailwindcss": "^3.1.8",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "npx tailwindcss -i ./src/input.css -o ./src/App.css --watch & react-scripts start",
+    "build": "npx tailwindcss -i ./src/input.css -o ./src/App.css && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
