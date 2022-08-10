@@ -1,6 +1,6 @@
-import { useEffect, useReducer } from "react";
-import "./App.css";
-import { TickerQuote } from "./TickerQuote";
+import { useEffect, useReducer } from "react"
+import "./App.css"
+import { TickerQuote } from "./TickerQuote"
 
 function App() {
   const [tickerDisplayState, dispatchTickerDisplayState] = useReducer(
@@ -12,23 +12,23 @@ function App() {
           end: tickerUpdate.end,
           change: tickerUpdate.change,
         },
-      };
-      return nextState;
+      }
+      return nextState
     },
-    {}
-  );
+    {},
+  )
 
   useEffect(() => {
     if (!window.StockTicker) {
-      console.error("StockTicker not found");
-      return;
+      console.error("StockTicker not found")
+      return
     }
 
     window.StockTicker.addListener((tick) => {
-      console.log(tick);
-      dispatchTickerDisplayState(tick);
-    });
-  }, []);
+      console.log(tick)
+      dispatchTickerDisplayState(tick)
+    })
+  }, [])
 
   return (
     <div className="w-screen h-screen bg-slate-900 p-10">
@@ -44,7 +44,7 @@ function App() {
         />
       ))}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

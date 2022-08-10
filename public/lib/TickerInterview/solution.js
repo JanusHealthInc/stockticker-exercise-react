@@ -1,3 +1,2 @@
 // Your code here
-StockTicker.addListener(function (tick) {
-});
+StockTicker.addListener(function (tick) {})
